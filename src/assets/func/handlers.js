@@ -103,6 +103,23 @@ exports.registerSlash = async () => {
 
 };
 
+exports.catchErrors = () => {
+  
+  readdirSync("./src/process").forEach((e) => {
+
+    let data = require(`./../src/process/${e}`);
+
+    process.on(data.event, data.run.bind(process));
+
+  });
+  
+  console.log(log.success(
+    "NodeJS", 
+    "Error-catchers are placed."
+  ));
+  
+};
+
 exports.initializeBot = () => {
 
   const { 
@@ -110,7 +127,8 @@ exports.initializeBot = () => {
     eventHandler: b, 
     commandHandler: c, 
     registerSlash: d,
-    setServer: e
+    setServer: e, 
+    catchErrors: f
   } = this;
 
   a();
