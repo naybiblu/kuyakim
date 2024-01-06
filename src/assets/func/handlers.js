@@ -136,6 +136,7 @@ exports.initializeBot = () => {
   c();
   d();
   e();
+  f();
   dc.login(token);
 
 };
