@@ -107,7 +107,7 @@ exports.catchErrors = () => {
   
   readdirSync("./src/process").forEach((e) => {
 
-    let data = require(`./../src/process/${e}`);
+    let data = require(`./../../process/${e}`);
 
     process.on(data.event, data.run.bind(process));
 
