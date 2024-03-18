@@ -6,11 +6,13 @@ module.exports = {
   once: false,
   async run(oldM) {
 
+    if (oldM.author.bot) return;
+
     await snipe(
       oldM.id, 
-      "edit", 
+      "edite", 
       oldM.content, 
-      oldM.member.id,
+      oldM.author.id,
       oldM.channel.id,
       oldM.attachments.first() ? message.attachments.first().proxyURL : null
     );

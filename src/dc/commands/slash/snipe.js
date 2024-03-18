@@ -12,7 +12,7 @@ module.exports = {
     const recent = await model.findOne({ channelID: i.channel.id });
 
     if (!recent) return i.reply({
-      content: "❎ | **There is nothing here that you can snipe to.**",
+      content: "❎ **There is nothing here that you can snipe to.**",
       ephemeral: true
     });
     else {
@@ -22,16 +22,18 @@ module.exports = {
       i.reply({
         embeds: [
           {
-            title: `🌠 | Recently ${recent.type}d message detected!`,
-            color: 0x3092790,
+            color: 3092790,
             author: {
-              name: member,
+              name: member.displayName,
               icon_url: member.displayAvatarURL()
             },
-            description: msg.content ? "> " + recent.content : null,
+            description: recent.content ? "> " + recent.content : null,
             timestamp: new Date(recent.timestamp).toISOString(),
             image: {
               url: recent.imageURL
+            },
+            footer: {
+              text: `🌠 Recently ${recent.type}d message`,
             }
           }
         ]

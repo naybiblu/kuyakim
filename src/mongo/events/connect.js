@@ -1,15 +1,19 @@
+const mongo = require("mongoose");
 const { log } = require("./../../assets/func/dcMisc.js");
 
 module.exports = {
 
     event: "connect",
-    once: false,
     async run() {
   
-        console.log(log.success(
-            "MongoDB",
-            `Online.`
-        ));
+        mongo.connection.on("connect", async () => {
+
+            console.log(log.success(
+                "MongoDB",
+                `Online.`
+            ));
+
+        });
   
     }
   

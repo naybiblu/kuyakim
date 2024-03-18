@@ -79,7 +79,7 @@ exports.registerSlash = async () => {
   const rest = new REST({ version: '10' }).setToken(token);
 
   dc.commands.filter((c) => c.slash).forEach((command) => comArr.push(command.data.toJSON()));
-  console.log("yru");
+
   await rest.put(
     Routes.applicationGuildCommands(botID, guildID),
     {
@@ -109,13 +109,12 @@ exports.connectDB = async () => {
 
   await db.connect();
 
-  readdirSync("./src/mongo/events").filter((e) => e.endsWith(".js")).forEach((event) => {
+  readdirSync("./src/mongo/events").filter((e) => e.endsWith(".js")).forEach(async (event) => {
 
-    let data = require(`./../../dc/events/${event}`);
+    let data = require(`./../../mongo/events/${event}`);
 
-    if (data.once) mongo.connection.once(data.event, data.run.bind(mongo.connection));
-    else mongo.connection.on(data.event, data.run.bind(mongo.connection));
-    
+    data.run();
+
   });
 
 };
