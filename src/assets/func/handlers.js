@@ -1,9 +1,11 @@
 const { readdirSync } = require("fs");
 const express = require("express");
+const mongo = require("mongoose");
 const { REST, Routes, Collection } = require("discord.js");
 require("dotenv").config();
 const { log } = require("./dcMisc.js");
 const { dc } = require("./clients.js");
+const { mongo: db } = require("./db.js");
 const { 
         DC_BOTID: botID,
         DC_GUILDID: guildID,
@@ -43,7 +45,7 @@ exports.eventHandler = () => {
     if (data.once) dc.once(data.event, data.run.bind(dc));
     else dc.on(data.event, data.run.bind(dc));
     
-    });
+  });
 
 };
 
@@ -77,7 +79,7 @@ exports.registerSlash = async () => {
   const rest = new REST({ version: '10' }).setToken(token);
 
   dc.commands.filter((c) => c.slash).forEach((command) => comArr.push(command.data.toJSON()));
-
+  console.log("yru");
   await rest.put(
     Routes.applicationGuildCommands(botID, guildID),
     {
@@ -99,6 +101,21 @@ exports.registerSlash = async () => {
       `Something went wrong while processing a certain slash command.`
     ));
 
+  });
+
+};
+
+exports.connectDB = async () => {
+
+  await db.connect();
+
+  readdirSync("./src/mongo/events").filter((e) => e.endsWith(".js")).forEach((event) => {
+
+    let data = require(`./../../dc/events/${event}`);
+
+    if (data.once) mongo.connection.once(data.event, data.run.bind(mongo.connection));
+    else mongo.connection.on(data.event, data.run.bind(mongo.connection));
+    
   });
 
 };
@@ -127,8 +144,9 @@ exports.initializeBot = () => {
     eventHandler: b, 
     commandHandler: c, 
     registerSlash: d,
-    setServer: e, 
-    catchErrors: f
+    setServer: e,
+    connectDB: f,
+    catchErrors: g
   } = this;
 
   a();
@@ -137,6 +155,7 @@ exports.initializeBot = () => {
   d();
   e();
   f();
+  g();
   dc.login(token);
 
 };

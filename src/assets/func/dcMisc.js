@@ -4,6 +4,7 @@ const { Canvas } = require("canvacord");
 const { AttachmentBuilder } = require('discord.js');
 const { getRandomInt } = require("./misc.js");
 const { dc } = require("./clients.js");
+const { model } = require("./../db/models/snipe.js");
 
 exports.log = { 
 
@@ -36,7 +37,7 @@ exports.dynamicGraphics = {
     const canvas = createCanvas(1240, 400);
     const ctx = canvas.getContext('2d');
     const avatar = await loadImage(member?.user.displayAvatarURL({ extension: 'png' }));
-    const bg = await loadImage("https://media.discordapp.net/attachments/880362586015670292/1190640079820034148/20231230_192714_0000.png?ex=65a288fc&is=659013fc&hm=17d00898e2cbb85309a3e78533c2a1ba521cfefff883f1d7c9d00c46633cfd19&");
+    const bg = await loadImage("https://media.discordapp.net/attachments/880362586015670292/1190640079820034148/20231230_192714_0000.png?ex=66080c7c&is=65f5977c&hm=a289a7740ef508b0fd9ebcd7a4cf4c48ad1e71c77e0de110bd3abcc9161f65ee&=&format=png&quality=lossless&width=1025&height=410");
 
     ctx.drawImage(bg, 0, 0, canvas.width, 480);
 
@@ -129,4 +130,34 @@ exports.dynamicGraphics = {
     
   }
   
+};
+
+exports.snipe = async (messageID, type, content, memberID, channelID, imageURL) => {
+
+  const current = await model.findOne({ channelID: channelID });
+
+  if (!current) await model.create({
+    id: messageID,
+    type: type,
+    content: content,
+    memberID: memberID,
+    channelID: channelID,
+    imageURL: imageURL,
+    timestamp: Date.now()
+  });
+  else await model.updateOne(
+    {
+      channelID: channelID
+    },
+    {
+      id: messageID,
+      type: type,
+      content: content,
+      memberID: memberID,
+      channelID: channelID,
+      imageURL: imageURL,
+      timestamp: Date.now()
+    }
+  );
+
 };
