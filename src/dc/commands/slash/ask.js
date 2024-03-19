@@ -25,7 +25,8 @@ module.exports = {
   slash: true,
   async run (i) {
 
-    const model = i.options.getString("model");
+    //const model = i.options.getString("model");
+    const model = "gemini";
     const prompt = i.options.getString("prompt");
 
     await i.reply("<a:loading:1192136274811813980> Let me think...");
