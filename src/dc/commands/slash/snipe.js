@@ -5,7 +5,7 @@ module.exports = {
 
   data: new SlashCommandBuilder()
     .setName("snipe")
-    .setDescription("Discover the recent deleted or edited message in the server."),
+    .setDescription("Discover the recently deleted or edited message in the server."),
   slash: true,
   async run (i) {
 

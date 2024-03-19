@@ -4,6 +4,7 @@ exports.dc = new Client({
     intents: [
       "Guilds",
       "GuildMessages",
+      "GuildPresences",
       "GuildMembers",
       "DirectMessages",
       "MessageContent"

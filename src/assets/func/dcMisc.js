@@ -2,6 +2,9 @@ const colors = require('colors/safe');
 const { loadImage, createCanvas, registerFont } = require('canvas');
 const { Canvas } = require("canvacord");
 const { AttachmentBuilder } = require('discord.js');
+const { ChatSession, CompletionService } = require('langxlang');
+const { OAI_APIKEY: chatgpt,
+        GEMINI_APIKEY: gemini } = process.env;
 const { getRandomInt } = require("./misc.js");
 const { dc } = require("./clients.js");
 const { model } = require("./../db/models/snipe.js");
@@ -159,5 +162,29 @@ exports.snipe = async (messageID, type, content, memberID, channelID, imageURL) 
       timestamp: Date.now()
     }
   );
+
+};
+
+exports.aiChat = async (prompt, interaction, type) => {
+
+  const service = new CompletionService({
+    openai: [chatgpt], 
+    gemini: [gemini] 
+  });
+  const model = type === "gemini" ? "gemini-1.0-pro" : "gpt-3.5-turbo-16k";
+  const session = new ChatSession(
+    service, 
+    model,
+    ''
+  );
+  prompt = `Hello! Pretend that your name is Kuya Kim, and pretend that you can call everyone as Hausmeyt. You are running over the ${model} API.` + prompt;
+
+  await session.sendMessage(
+    prompt, 
+    async ({ content }) => { 
+      
+      await interaction.editReply(content);
+      
+  });
 
 };
