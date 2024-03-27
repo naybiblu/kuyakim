@@ -1,11 +1,13 @@
-exports.run = (message) => {
+const { dc: bot } = require("./../../../../assets/func/clients.js");
+
+exports.run = async (message) => {
 
     if (message.author.bot) return;
     if (message.channel.id !== "880069748740735029") return;
 
     const author = message.author;
 
-    message.guilds.resolve("1102107437483446275").channels.resolve("1102107800420761670").send({
+    await bot.guilds.resolve("1102107437483446275").channels.resolve("1102107800420761670").send({
         embeds: [{
             color: 3092790,
             author: {
