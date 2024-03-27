@@ -14,7 +14,7 @@ module.exports = {
       oldM.content, 
       oldM.author.id,
       oldM.channel.id,
-      oldM.attachments.first() ? message.attachments.first().proxyURL : null
+      oldM.attachments.first() ? oldM.attachments.first().proxyURL : null
     );
 
   }
