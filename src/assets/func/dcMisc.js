@@ -40,7 +40,7 @@ exports.dynamicGraphics = {
     const canvas = createCanvas(1240, 400);
     const ctx = canvas.getContext('2d');
     const avatar = await loadImage(member?.user.displayAvatarURL({ extension: 'png' }));
-    const bg = await loadImage("https://media.discordapp.net/attachments/880362586015670292/1190640079820034148/20231230_192714_0000.png?ex=66080c7c&is=65f5977c&hm=a289a7740ef508b0fd9ebcd7a4cf4c48ad1e71c77e0de110bd3abcc9161f65ee&=&format=png&quality=lossless&width=1025&height=410");
+    const bg = await loadImage("src/assets/files/img/welcome.png");
 
     ctx.drawImage(bg, 0, 0, canvas.width, 480);
 
